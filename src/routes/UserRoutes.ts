@@ -7,24 +7,24 @@ import { IReq, IRes } from './types/express/misc';
 
 async function getAll(_: IReq, res: IRes) {
 	const users = await UserServices.getAll();
-	return res.status(HttpStatusCodes.OK).json({ users });
+	return res.status(HttpStatusCodes.OK).json(users);
 }
 
 async function getOne(req: IReq, res: IRes) {
-	const users = await UserServices.getOne(parseInt(req.params.id, 10));
-	return res.status(HttpStatusCodes.OK).json({ users });
+	const user = await UserServices.getOne(parseInt(req.params.id, 10));
+	return res.status(HttpStatusCodes.OK).json(user);
 }
 
 async function getUserComments(req: IReq, res: IRes) {
 	const {id} = req.params;
 	const comments = await UserServices.getUserComments(parseInt(id, 10));
-	return res.status(HttpStatusCodes.OK).json({ comments });
+	return res.status(HttpStatusCodes.OK).json(comments);
 }
 
 async function getUserPosts(req: IReq, res: IRes) {
 	const {id} = req.params;
 	const posts = await UserServices.getUserPosts(parseInt(id, 10));
-	return res.status(HttpStatusCodes.OK).json({ posts });
+	return res.status(HttpStatusCodes.OK).json(posts);
 }
 
 async function add(req: IReq<{user: IUser}>, res: IRes) {

@@ -7,12 +7,12 @@ import { IReq, IRes } from './types/express/misc';
 
 async function getAll(_: IReq, res: IRes) {
 	const comments = await CommentServices.getAll();
-	return res.status(HttpStatusCodes.OK).json({ comments });
+	return res.status(HttpStatusCodes.OK).json(comments);
 }
 
 async function getOne(req: IReq, res: IRes) {
 	const comments = await CommentServices.getOne(parseInt(req.params.id, 10));
-	return res.status(HttpStatusCodes.OK).json({ comments });
+	return res.status(HttpStatusCodes.OK).json(comments);
 }
 
 async function add(req: IReq<{comment: IComment}>, res: IRes) {
