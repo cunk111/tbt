@@ -1,8 +1,5 @@
-/**
- * Setup express server.
- */
-
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
@@ -21,12 +18,9 @@ import { NodeEnvs } from '@src/constants/misc';
 import { RouteError } from '@src/other/classes';
 
 
-// **** Variables **** //
-
 const app = express();
+app.use(cors<Request>());
 
-
-// **** Setup **** //
 
 // Basic middleware
 app.use(express.json());
