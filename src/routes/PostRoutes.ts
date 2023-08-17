@@ -27,14 +27,14 @@ async function getPostComments(req: IReq, res: IRes) {
 	return res.status(HttpStatusCodes.OK).json(comments);
 }
 
-async function add(req: IReq<{post: IPost}>, res: IRes) {
-	const { post } = req.body;
+async function add(req: IReq<IPost>, res: IRes) {
+	const post = req.body;
 	await PostServices.addOne(post);
 	return res.status(HttpStatusCodes.CREATED).end();
 }
 
-async function update(req: IReq<{post: IPost}>, res: IRes) {
-	const { post } = req.body;
+async function update(req: IReq<IPost>, res: IRes) {
+	const post = req.body;
 	await PostServices.updateOne(post);
 	return res.status(HttpStatusCodes.OK).end();
 }

@@ -15,14 +15,15 @@ async function getOne(req: IReq, res: IRes) {
 	return res.status(HttpStatusCodes.OK).json(comments);
 }
 
-async function add(req: IReq<{comment: IComment}>, res: IRes) {
-	const { comment } = req.body;
+async function add(req: IReq<IComment>, res: IRes) {
+	const comment  = req.body;
+	console.log(comment);
 	await CommentServices.addOne(comment);
 	return res.status(HttpStatusCodes.CREATED).end();
 }
 
-async function update(req: IReq<{comment: IComment}>, res: IRes) {
-	const { comment } = req.body;
+async function update(req: IReq<IComment>, res: IRes) {
+	const comment = req.body;
 	await CommentServices.updateOne(comment);
 	return res.status(HttpStatusCodes.OK).end();
 }

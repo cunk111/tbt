@@ -25,7 +25,10 @@ async function getThread(id: IPost['id']) { // : Promise<TPost | null>
 	const post = await PostRepo.getOne(id);
 
 	if (Array.isArray(comments)) {
-		return [post, ...comments.sort((alpha, omega) => alpha.date - omega.date)];
+		return {
+			post: post,
+			comments: [...comments.sort((a, b) => a.date - b.date)],
+		};
 	}
 }
 

@@ -27,14 +27,14 @@ async function getUserPosts(req: IReq, res: IRes) {
 	return res.status(HttpStatusCodes.OK).json(posts);
 }
 
-async function add(req: IReq<{user: IUser}>, res: IRes) {
-	const { user } = req.body;
+async function add(req: IReq<IUser>, res: IRes) {
+	const user = req.body;
 	await UserServices.addOne(user);
 	return res.status(HttpStatusCodes.CREATED).end();
 }
 
-async function update(req: IReq<{user: IUser}>, res: IRes) {
-	const { user } = req.body;
+async function update(req: IReq<IUser>, res: IRes) {
+	const user = req.body;
 	await UserServices.updateOne(user);
 	return res.status(HttpStatusCodes.OK).end();
 }
