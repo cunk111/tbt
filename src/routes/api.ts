@@ -3,9 +3,9 @@ import jetValidator from 'jet-validator';
 
 import Paths from './constants/Paths';
 
-import Comment from '@src/models/Comment';
-import User from '@src/models/User';
-import Post from '@src/models/Post';
+// import Comment from '@src/models/Comment';
+// import User from '@src/models/User';
+// import Post from '@src/models/Post';
 
 import CommentRoutes from './CommentRoutes';
 import UserRoutes from './UserRoutes';
@@ -32,13 +32,13 @@ commentRouter.get(
 
 commentRouter.post(
 	Paths.Comments.Add,
-	validate(['comment', Comment.isComment]),
+	// validate(['comment', Comment.isComment]),
 	CommentRoutes.add,
 );
 
 commentRouter.put(
 	Paths.Comments.Update,
-	validate(['comment', Comment.isComment]),
+	// validate(['comment', Comment.isComment]),
 	CommentRoutes.update,
 );
 
@@ -75,13 +75,13 @@ postRouter.get(
 
 postRouter.post(
 	Paths.Posts.Add,
-	validate(['post', Post.isPost]),
+	// validate(['post', Post.isPost]),
 	PostRoutes.add,
 );
 
 postRouter.put(
 	Paths.Posts.Update,
-	validate(['post', Post.isPost]),
+	// validate(['post', Post.isPost]),
 	PostRoutes.update,
 );
 
@@ -118,13 +118,13 @@ userRouter.get(
 
 userRouter.post(
 	Paths.Users.Add,
-	validate(['user', User.isUser]),
+	// validate(['user', User.isUser]),
 	UserRoutes.add,
 );
 
 userRouter.put(
 	Paths.Users.Update,
-	validate(['user', User.isUser]),
+	// validate(['user', User.isUser]),
 	UserRoutes.update,
 );
 
