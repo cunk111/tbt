@@ -2,6 +2,13 @@ import { Immutable } from '@src/other/types';
 
 const Paths = {
 	Base: '/api',
+	Auth: {
+		Base: '/auth',
+		Register: '/register',
+		SignIn: '/signin',
+		SignOut: '/signout',
+		Reset: '/password',
+	},
 	Comments: {
 		Base: '/comments',
 		Get: '/all',

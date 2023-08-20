@@ -3,17 +3,41 @@ import jetValidator from 'jet-validator';
 
 import Paths from './constants/Paths';
 
-// import Comment from '@src/models/Comment';
-// import User from '@src/models/User';
-// import Post from '@src/models/Post';
-
+import AuthRoutes from './AuthRoutes';
 import CommentRoutes from './CommentRoutes';
 import UserRoutes from './UserRoutes';
 import PostRoutes from './PostRoutes';
 
 
+
 const apiRouter = Router(),
 	validate = jetValidator();
+
+// auth routes
+const authRouter = Router();
+
+// 	register: (username: string, email: string, password: string) => Promise<UserModel>;
+authRouter.post(
+	Paths.Auth.Register,
+	AuthRoutes.register,
+)
+// 	login: (email: string, password: string) => Promise<UserModel>;
+authRouter.post(
+	Paths.Auth.SignIn, // '/api/signin',
+	AuthRoutes.signin,
+)
+
+// 	logout: () => Promise<void>;
+// authRouter.delete(
+// 	Paths.Auth.SignOut,
+// 	AuthRoutes.signout,
+// )
+
+// 	resetPassword: (password: string, passwordConfirmation: string, headers: string) => Promise<void>;
+// authRouter.put(
+// 	Paths.Auth.Reset,
+// 	AuthRoutes.reset
+// )
 
 
 // Comments routes
@@ -136,6 +160,7 @@ userRouter.delete(
 
 
 // Add each router
+apiRouter.use(Paths.Auth.Base, authRouter);
 apiRouter.use(Paths.Comments.Base, commentRouter);
 apiRouter.use(Paths.Posts.Base, postRouter);
 apiRouter.use(Paths.Users.Base, userRouter);

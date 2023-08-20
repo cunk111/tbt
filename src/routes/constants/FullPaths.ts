@@ -1,14 +1,14 @@
 
 /**
- * Convert paths to full paths.
- */
+* Convert paths to full paths.
+*/
 
 import Paths, { TPaths } from './Paths';
 
 
 interface IPathObj {
-  Base: string;
-  [key: string]: string | IPathObj;
+	Base: string;
+	[key: string]: string | IPathObj;
 }
 
 /**
