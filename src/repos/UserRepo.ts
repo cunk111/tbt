@@ -1,8 +1,11 @@
-import { getRandomInt } from '@src/util/misc';
+// TODO replace with uuid
+import {getRandomInt} from '@src/util/misc';
 
 import {IComment} from '@src/models/Comment';
-import { IUser } from '@src/models/User';
+import {IUser} from '@src/models/User';
+
 import orm from './MockOrm';
+
 
 
 async function getAll(): Promise<IUser[]> {
@@ -14,6 +17,16 @@ async function getOne(id: IUser['id']): Promise<IUser | null> {
 	const db = await orm.openDb();
 	for (const user of db.users) {
 		if (user.id === id) {
+			return user;
+		}
+	}
+	return null;
+}
+
+async function getOneByMail(email: IUser['email']): Promise<IUser | null> {
+	const db = await orm.openDb();
+	for (const user of db.users) {
+		if (user.email === email) {
 			return user;
 		}
 	}
@@ -63,13 +76,54 @@ async function delete_(id: number): Promise<void> {
 	}
 }
 
+async function register(
+	username: IUser['username'],
+	email: IUser['email'],
+	hash: IUser['password'],
+): Promise<IUser | undefined> {
+	const db = await orm.openDb();
+
+	// check if user already exists
+	if (db.users.find(user => user.email === email)) return undefined;
+
+	db.users.push({
+		id: getRandomInt(),
+		email: email,
+		username: username,
+		password: hash,
+	});
+
+	await orm.saveDb(db);
+	return db.users.find(user => user.email === email); // yucky
+}
+
+async function signout(): Promise<void> {
+	const db = await orm.openDb();
+	return orm.saveDb(db);
+}
+
+// async function password(comment: IUser): Promise<void> {
+// 	const db = await orm.openDb();
+// 	for (let i = 0; i < db.comments.length; i++) {
+// 		if (db.comments[i].id === comment.id) {
+// 			db.comments[i] = comment;
+// 			return orm.saveDb(db);
+// 		}
+// 	}
+// }
+
 
 export default {
 	getAll,
 	getOne,
+	getOneByMail,
 	getUserComments,
 	persists,
 	add,
 	update,
 	delete: delete_,
+	register, // TODO register is basically add, gotta merge that
+	signout,
 } as const;
+
+

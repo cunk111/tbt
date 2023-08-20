@@ -1,37 +1,76 @@
-import {IUser} from '@src/models/User';
-import AuthRepo from '@src/repos/AuthRepo';
-import {RouteError} from '@src/other/classes';
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import jwt from 'jsonwebtoken';
+import {hashPassword} from '@src/util/encryption';
 
-export const USER_NOT_FOUND_ERR = 'user not found';
+import {ILoggedUser, IUser} from '@src/models/User';
+import UserRepo from '@src/repos/UserRepo';
+
+import {matchPassword} from '@src/util/encryption';
+
+// import {RouteError} from '@src/other/classes';
+// import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+
+// export const USER_NOT_FOUND_ERR = 'user not found';
 
 
-function register(username: IUser['username'], email: IUser['email'], password: IUser['password']): Promise<IUser | undefined> {
-	return AuthRepo.register(username, email, password);
+async function register(
+	username: IUser['username'],
+	email: IUser['email'],
+	password: IUser['password'],
+): Promise<ILoggedUser | undefined> {
+	const newUser = await UserRepo.register(username, email, hashPassword(password));
+
+	if (newUser) {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+		const token = jwt.sign({
+			id: newUser.id.toString(),
+			name: newUser.username,
+		}, 'SECRET_KEY');
+
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		return {...newUser, token} as ILoggedUser;
+	}
+	return newUser;
 }
 
-function signin(email: IUser['email'], password: IUser['password']): Promise<IUser | undefined> {
-	return AuthRepo.signin(email, password);
-}
+async function signin(
+	email: IUser['email'],
+	password: IUser['password'],
+): Promise<ILoggedUser | undefined> {
+	const potentialUser= await UserRepo.getOneByMail(email);
 
-// function signout(post: IUser): Promise<void> {
-// 	return AuthRepo.signout(post);
-// }
+	if (potentialUser) {
+		const matchFound= matchPassword(password, potentialUser.password);
+		if (matchFound) {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+			const token = jwt.sign({
+				id: potentialUser.id.toString(),
+				name: potentialUser.username,
+			}, 'SECRET_KEY');
+
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			return {...potentialUser, token} as ILoggedUser;
+		}
+		return undefined;
+	}
+}
+function signout(): Promise<void> {
+	return UserRepo.signout();
+}
 
 // async function password(post: IUser): Promise<void> {
-// 	const persists = await AuthRepo.persists(post.id);
+// 	const persists = await UserRepo.persists(post.id);
 // 	if (!persists) {
 // 		throw new RouteError(
 // 			HttpStatusCodes.NOT_FOUND,
 // 			USER_NOT_FOUND_ERR,
 // 		);
 // 	}
-// 	return AuthRepo.password(post);
+// 	return UserRepo.password(post);
 // }
 
 export default {
 	register,
 	signin,
-	// signout,
+	signout,
 	// password,
 } as const;

@@ -6,16 +6,16 @@ export interface IPost {
 	title: string;
 }
 
-function isPost(arg: unknown): boolean {
-	return (
-		!!arg &&
-			typeof arg === 'object' &&
-			'details' in arg &&
-			'owner' in arg &&
-			'title' in arg
-	);
-}
+// function isPost(arg: unknown): boolean {
+// 	return (
+// 		!!arg &&
+// 			typeof arg === 'object' &&
+// 			'details' in arg &&
+// 			'owner' in arg &&
+// 			'title' in arg
+// 	);
+// }
 
-export default {
-	isPost,
-} as const;
+// export default {
+// 	isPost,
+// } as const;

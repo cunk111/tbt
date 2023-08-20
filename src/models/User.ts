@@ -1,3 +1,4 @@
+import type {JwtPayload} from 'jsonwebtoken';
 export interface IUser {
   id: number;
   username: string;
@@ -5,15 +6,9 @@ export interface IUser {
 	password: string;
 }
 
-function isUser(arg: unknown): boolean {
-	return (
-		!!arg &&
-		typeof arg === 'object' &&
-		'email' in arg &&
-		'name' in arg
-	);
+export interface ILoggedUser extends IUser {
+	token: JwtPayload | string;
 }
 
-export default {
-	isUser,
-} as const;
+// export interface ILoggingUser extends IUser {
+// }

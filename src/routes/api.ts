@@ -16,22 +16,20 @@ const apiRouter = Router(),
 // auth routes
 const authRouter = Router();
 
-// 	register: (username: string, email: string, password: string) => Promise<UserModel>;
 authRouter.post(
 	Paths.Auth.Register,
 	AuthRoutes.register,
-)
-// 	login: (email: string, password: string) => Promise<UserModel>;
-authRouter.post(
-	Paths.Auth.SignIn, // '/api/signin',
-	AuthRoutes.signin,
-)
+);
 
-// 	logout: () => Promise<void>;
-// authRouter.delete(
-// 	Paths.Auth.SignOut,
-// 	AuthRoutes.signout,
-// )
+authRouter.post(
+	Paths.Auth.SignIn,
+	AuthRoutes.signin,
+);
+
+authRouter.delete(
+	Paths.Auth.SignOut,
+	AuthRoutes.signout,
+);
 
 // 	resetPassword: (password: string, passwordConfirmation: string, headers: string) => Promise<void>;
 // authRouter.put(

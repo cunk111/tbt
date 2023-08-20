@@ -6,16 +6,16 @@ export interface IComment {
 	parent: number;
 }
 
-function isComment(arg: unknown): boolean {
-	return (
-		!!arg &&
-			typeof arg === 'object' &&
-			'content' in arg &&
-			'owner' in arg &&
-			'parent' in arg
-	);
-}
+// function isComment(arg: unknown): boolean {
+// 	return (
+// 		!!arg &&
+// 			typeof arg === 'object' &&
+// 			'content' in arg &&
+// 			'owner' in arg &&
+// 			'parent' in arg
+// 	);
+// }
 
-export default {
-	isComment,
-} as const;
+// export default {
+// 	isComment,
+// } as const;
