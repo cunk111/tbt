@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "build": "npx ts-node build.ts",
-    "lint": "npx eslint --ext .ts src/",
-    "lint-fix": "npx eslint --fix --ext .ts src/",
+    "lint": "npx eslint --ext .ts app/",
+    "lint-fix": "npx eslint --fix --ext .ts app/",
     "lint:tests": "npx eslint --ext .ts spec/",
     "start": "node -r module-alias/register ./dist --env=development",
     "dev": "nodemon",
@@ -14,20 +14,15 @@
     "db:down": "docker compose -f docker-compose.yml down"
   },
   "nodemonConfig": {
-    "watch": [
-      "src"
-    ],
+    "watch": ["app"],
     "ext": "ts, html",
-    "ignore": [
-      "src/public"
-    ],
-    "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
+    "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./app"
   },
   "_moduleAliases": {
-    "@src": "dist"
+    "@app": "dist"
   },
   "engines": {
-    "node": ">=10.5.0"
+    "node": ">=18.17.1"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",

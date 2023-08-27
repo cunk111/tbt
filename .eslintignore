@@ -1,4 +1,4 @@
-src/public/
+app/public/
 dist/
 env/
 spec/
