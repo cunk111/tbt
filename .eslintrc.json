@@ -21,7 +21,6 @@
     "semi": ["warn", "never"],
     "indent": ["warn", "tab"],
     "quotes": ["warn", "single"],
-    "node/no-process-env": 1,
     "node/no-unsupported-features/es-syntax": ["error", {"ignores" : ["modules"]}],
     "node/no-missing-import": 0,
     "node/no-unpublished-import": 0

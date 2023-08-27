@@ -1,21 +1,18 @@
-import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import morgan from 'morgan'
-import path from 'path'
 import helmet from 'helmet'
-import express, { Request, Response, NextFunction } from 'express'
 import logger from 'jet-logger'
+import express, { Request, Response, NextFunction } from 'express'
 
 import 'express-async-errors'
 
-import BaseRouter from './routes/routes'
-import Paths from './constants/Paths'
+import routes from '@routes/routes'
 
-import EnvVars from './constants/EnvVars'
-import HttpStatusCodes from './constants/HttpStatusCodes'
+import HttpStatusCodes from '@constants/HttpStatusCodes'
+import Paths from '@constants/Paths'
 
-import { NodeEnvs } from './constants/misc'
-import { RouteError } from './models/classes'
+import { RouteError } from '@models/classes'
+import process from 'process'
 
 
 const app = express()
@@ -25,20 +22,20 @@ app.use(cors<Request>())
 // Basic middleware
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use(cookieParser(EnvVars.CookieProps.Secret))
+// app.use(cookieParser(EnvVars.CookieProps.Secret))
 
 // Show routes called in console during development
-if (EnvVars.NodeEnv === NodeEnvs.Dev.valueOf()) {
+if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'))
 }
 
 // Security
-if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
+if (process.env.NODE_ENV === 'production') {
 	app.use(helmet())
 }
 
 // Add APIs, must be after middleware
-app.use(Paths.Base, BaseRouter)
+app.use(Paths.Base, routes)
 
 // Add error handler
 app.use((
@@ -48,7 +45,7 @@ app.use((
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	next: NextFunction,
 ) => {
-	if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
+	if (process.env.NODE_ENV !== 'test') {
 		logger.err(err, true)
 	}
 	let status = HttpStatusCodes.BAD_REQUEST
@@ -57,29 +54,5 @@ app.use((
 	}
 	return res.status(status).json({ error: err.message })
 })
-
-
-// ** Front-End Content ** //
-
-// Set views directory (html)
-const viewsDir = path.join(__dirname, 'views')
-app.set('views', viewsDir)
-
-// Set static directory (js and css).
-const staticDir = path.join(__dirname, 'public')
-app.use(express.static(staticDir))
-
-// Nav to users pg by default
-app.get('/', (_: Request, res: Response) => {
-	return res.redirect('/users')
-})
-
-// Redirect to login if not logged in.
-app.get('/users', (_: Request, res: Response) => {
-	return res.sendFile('users.html', { root: viewsDir })
-})
-
-
-// **** Export default **** //
 
 export default app

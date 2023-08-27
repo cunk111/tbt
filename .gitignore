@@ -1,7 +1,10 @@
 **/node_modules
 dist/
 data/
+env/.env.production
+.idea/
+
 package-lock.json
 yarn.lock
+
 **/**/*.log
-.idea/

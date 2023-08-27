@@ -1,4 +1,5 @@
 app/public/
-dist/
 env/
 spec/
+data/
+node_modules/

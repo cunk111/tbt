@@ -21,7 +21,6 @@
   },
   "include": [
     "app/**/*.ts",
-    "spec/**/*.ts",
     "build.ts"
   ],
   "exclude": [

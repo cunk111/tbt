@@ -1,13 +1,10 @@
-import './pre-start' // Must be the first import
+import process from 'process'
 import logger from 'jet-logger'
+import 'module-alias/register' // TODO fix build process
+import 'dotenv/config'
 
-import EnvVars from './constants/EnvVars'
 import server from './server'
 
+const prompt = `Server listening on port: ${(process.env.PORT || '').toString()}`
 
-// **** Run **** //
-
-const SERVER_START_MSG = ('Express server started on port: ' +
-  EnvVars.Port.toString())
-
-server.listen(EnvVars.Port, () => logger.info(SERVER_START_MSG))
+server.listen(process.env.PORT, () => logger.info(prompt))

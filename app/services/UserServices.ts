@@ -1,7 +1,7 @@
 import {IComment} from '@models/Comment'
 import {IUser} from '@models/User'
 
-// TODO replace with uuid
+// TODO replace with uuid - or rework logic so it accepts db uuid
 import {getRandomInt} from '@utils/misc'
 
 import orm from '../infrastructure/MockOrm'
