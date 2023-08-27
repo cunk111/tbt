@@ -11,7 +11,7 @@ services:
     volumes:
       - pg_vol:/data/postgres
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql # create tables
-      # - ./sql/seed.sql:/docker-entrypoint-initdb.d/seed.sql # fill tables
+      - ./sql/seed.sql:/docker-entrypoint-initdb.d/seed.sql # fill tables
     ports:
       - '5432:5432'
     expose:
