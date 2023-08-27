@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: pg_container
+    image: postgres:alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 'massive secret' # TODO
+      PGDATA: /data/postgres
+    volumes:
+      - pg_vol:/data/postgres
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql # create tables
+      # - ./sql/seed.sql:/docker-entrypoint-initdb.d/seed.sql # fill tables
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
+volumes:
+  pg_vol:
