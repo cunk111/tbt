@@ -1,7 +1,8 @@
 import cors from 'cors'
-import morgan from 'morgan'
 import helmet from 'helmet'
 import logger from 'jet-logger'
+import morgan from 'morgan'
+import process from 'process'
 import express, { Request, Response, NextFunction } from 'express'
 
 import 'express-async-errors'
@@ -12,7 +13,6 @@ import HttpStatusCodes from '@constants/HttpStatusCodes'
 import Paths from '@constants/Paths'
 
 import { RouteError } from '@models/classes'
-import process from 'process'
 
 
 const app = express()
