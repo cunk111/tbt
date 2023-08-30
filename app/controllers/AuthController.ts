@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
 
-import {hashPassword, matchPassword} from '@utils/encryption'
 import {ILoggedUser, IUser} from '@models/User'
-import UserRepo from '../services/UserServices' // TODO why doesn'it support @services alias ?
+import UserRepo from '@services/UserServices'
+import {hashPassword, matchPassword} from '@utils/encryption'
 
 
 // import {RouteError} from '@app/other/classes';

@@ -35,9 +35,10 @@
     "jet-validator": "^1.1.1",
     "jsonfile": "^6.1.0",
     "jsonwebtoken": "^9.0.1",
+    "knex": "^2.5.1",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.0",
-    "sequelize": "^6.32.1"
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",

@@ -1,6 +1,6 @@
 import type {JwtPayload} from 'jsonwebtoken'
 export interface IUser {
-  id: number;
+  id: string;
   username: string;
   email: string;
 	password: string;

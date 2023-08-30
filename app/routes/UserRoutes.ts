@@ -11,20 +11,8 @@ async function getAll(_: IReq, res: IRes) {
 }
 
 async function getOne(req: IReq, res: IRes) {
-	const user = await UserServices.getOne(parseInt(req.params.id, 10))
+	const user = await UserServices.getOne(req.params.id)
 	return res.status(HttpStatusCodes.OK).json(user)
-}
-
-async function getUserComments(req: IReq, res: IRes) {
-	const {id} = req.params
-	const comments = await UserServices.getUserComments(parseInt(id, 10))
-	return res.status(HttpStatusCodes.OK).json(comments)
-}
-
-async function getUserPosts(req: IReq, res: IRes) {
-	const {id} = req.params
-	const posts = await UserServices.getUserPosts(parseInt(id, 10))
-	return res.status(HttpStatusCodes.OK).json(posts)
 }
 
 async function add(req: IReq<IUser>, res: IRes) {
@@ -40,7 +28,7 @@ async function update(req: IReq<IUser>, res: IRes) {
 }
 
 async function delete_(req: IReq, res: IRes) {
-	const id = +req.params.id
+	const id = req.params.id
 	await UserServices.delete(id)
 	return res.status(HttpStatusCodes.OK).end()
 }
@@ -49,8 +37,6 @@ async function delete_(req: IReq, res: IRes) {
 export default {
 	getAll,
 	getOne,
-	getUserComments,
-	getUserPosts,
 	add,
 	update,
 	delete: delete_,
