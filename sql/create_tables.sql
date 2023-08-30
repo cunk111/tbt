@@ -11,9 +11,9 @@ LANGUAGE plpgsql;
 -- Creation of user table
 CREATE TABLE IF NOT EXISTS user_account (
   u_id        uuid NOT NULL DEFAULT gen_random_uuid(),
-  u_username  VARCHAR(60) NOT NULL,
+  u_username  VARCHAR(60) NOT NULL UNIQUE,
   u_password  TEXT NOT NULL,
-  email       VARCHAR(320) NOT NULL,
+  email       VARCHAR(320) NOT NULL UNIQUE,
   created_at  TIMESTAMP NOT NULL DEFAULT current_timestamp,
   updated_at  TIMESTAMP NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (u_id)
