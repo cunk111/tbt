@@ -19,16 +19,6 @@ function getOne(id: IUser['id']): Promise<IUser | null> {
 	return UserRepo.getOne(id)
 }
 
-function getUserComments(id: IComment['owner']): Promise<IComment[] | null> {
-	return UserRepo.getUserComments(id)
-}
-
-function getUserPosts(id: IPost['id']): Promise<IPost[] | null> {
-
-	return PostRepo.getUserPosts(id)
-}
-
-
 function addOne(user: IUser): Promise<void> {
 	return UserRepo.add(user)
 }
@@ -59,8 +49,6 @@ async function _delete(id: number): Promise<void> {
 export default {
 	getAll,
 	getOne,
-	getUserComments,
-	getUserPosts,
 	addOne,
 	updateOne,
 	delete: _delete,
