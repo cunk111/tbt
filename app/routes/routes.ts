@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import {Router} from 'express'
 import jetValidator from 'jet-validator'
 
 import Paths from '@constants/Paths'

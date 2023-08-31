@@ -9,6 +9,3 @@ export interface IUser {
 export interface ILoggedUser extends IUser {
 	token: JwtPayload | string;
 }
-
-// export interface ILoggingUser extends IUser {
-// }

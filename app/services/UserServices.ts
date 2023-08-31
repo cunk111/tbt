@@ -1,76 +1,110 @@
 import {IUser} from '@models/User'
 import {pg} from '@infrastructure/database'
+import {hashPassword} from '@utils/encryption'
 
-async function getAll(): Promise<IUser[] | null> {
+async function getAll() {
 	try {
 		return pg
 			.select<IUser[]>('*')
 			.from('user_account')
-			.then((users: IUser[]): IUser[] => users)
-	} catch (error) {
-		return null
-	}
-}
-
-async function getOne(id: IUser['id']): Promise<IUser | null> {
-	try {
-		return pg
-			.select<IUser>('*')
-			.from('user_account')
-			.where({u_id: id})
 			.then(users => users)
 	} catch (error) {
 		return null
 	}
 }
 
-async function getOneByMail(email: IUser['email']): Promise<IUser | null> {
+async function findById(id: IUser['id']) {
 	try {
 		return pg
 			.select<IUser>('*')
 			.from('user_account')
-			.where({email: email})
-			.then((users: IUser): IUser => users)
+			.where({u_id: id})
+			.then(user => user)
 	} catch (error) {
 		return null
 	}
 }
 
-async function add(user: IUser): Promise<void> {
+async function findByMail(email: IUser['email']) {
 	try {
 		return pg
-			.insert(user)
-			.into('user_account')
+			.select<IUser>('*')
+			.from('user_account')
+			.where({email: email})
+			.then(user => user)
 	} catch (error) {
-		console.error(error)
+		return null
 	}
 }
 
-async function update(user: IUser): Promise<void> {
+// async function findByUsername(name: IUser['username']): Promise<IUser | null> {
+// 	try {
+// 		return pg
+// 			.select<IUser>('*')
+// 			.from('user_account')
+// 			.where({u_username: name})
+// 			.then((user: IUser): IUser => user)
+// 	} catch (error) {
+// 		return null
+// 	}
+// }
+
+async function add(user: IUser) {
+	try {
+		return pg
+			.insert<IUser>({
+				u_username: user.username,
+				u_password: hashPassword(user.password),
+				email: user.email,
+			})
+			.into('user_account')
+			.returning(['u_id', 'email', 'u_username'])
+	} catch (error) {
+		return null
+	}
+}
+
+async function update(user: IUser) {
 	try {
 		return pg
 			.update({
 				u_username: user.username,
-				u_password: user.password,
+				u_password: user.password, // TODO compare passwords
 				email: user.email,
 			})
 			.into('user_account')
 			.where({u_id: user.id})
-			.then(val => console.log('update', val))
+			.then(user => user)
 	} catch (error) {
-		console.error(error)
+		return null
 	}
 }
 
-async function delete_(id: IUser['id']): Promise<void> {
+async function delete_(id: IUser['id']) {
 	try {
 		return pg
 			.del()
 			.into('user_account')
 			.where({u_id: id})
-			.then(val => console.log('delete', val))
+			.returning('u_id')
+			// .then(val => console.log('delete', val))
 	} catch (error) {
 		console.error(error)
+		return null
+	}
+}
+
+async function checkExistence(name: IUser['username'], email: IUser['email']) {
+	try {
+		return pg
+			.select<IUser>('u_id')
+			.from('user_account')
+			.where({u_username: name})
+			.orWhere({email: email})
+			.then(exists => exists)
+	} catch (error) {
+		console.error(error)
+		return null
 	}
 }
 
@@ -115,11 +149,13 @@ async function signout(): Promise<void> {
 
 export default {
 	getAll,
-	getOne,
-	getOneByMail,
+	findById,
+	findByMail,
+	// findByUsername,
 	add,
 	update,
 	delete: delete_,
+	checkExistence,
 	register, // TODO register is basically add, gotta merge that
 	signout,
 } as const
