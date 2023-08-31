@@ -36,44 +36,6 @@ async function getOne(res: IRes, id: IUser['id']): Promise<IRes> {
 	}
 }
 
-async function addOne(res: IRes, user: IUser): Promise<IRes> {
-	try {
-		// TODO move to a legit schema validator middleware
-		// early abort : password too short, username too short, funky email ?
-		const {email, username, password} = user
-
-		if (password.length < 8) {
-			return res
-				.status(HttpStatusCodes.FORBIDDEN)
-				.json({error: 'password too short'})
-		}
-
-		// checks existence
-		const exists = await UserServices.checkExistence(username, email)
-		// early abort if exists
-		if (Array.isArray(exists) && exists.length > 0) {
-			return res
-				.status(HttpStatusCodes.FORBIDDEN)
-				.json({error: 'user already exists'})
-		}
-
-		// else tries to create
-		const new_user = await UserServices.add(user)
-		// creation failed
-		if (!new_user) {
-			return res
-				.status(HttpStatusCodes.BAD_REQUEST)
-				.json({error: 'error creating user'})
-		} else {
-			// creation succeeded
-			return res.status(HttpStatusCodes.CREATED).json(new_user)
-		}
-
-	} catch (error: unknown) {
-		return res.status(HttpStatusCodes.BAD_REQUEST).json(error)
-	}
-}
-
 async function updateOne(res: IRes, user: IUser): Promise<IRes> {
 	try {
 		const user_id = await UserServices.update(user)
@@ -106,9 +68,9 @@ async function _delete(res: IRes, id: IUser['id']): Promise<IRes> {
 
 
 export default {
+	// reminder : create/add belongs to Auth because it equates register
 	getAll,
 	getOne,
-	addOne,
 	updateOne,
 	delete: _delete,
 } as const

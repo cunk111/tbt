@@ -12,11 +12,6 @@ async function getOne(req: IReq, res: IRes) {
 	await UserController.getOne(res, id)
 }
 
-async function add(req: IReq<IUser>, res: IRes) {
-	const user = req.body
-	await UserController.addOne(res, user)
-}
-
 async function update(req: IReq<IUser>, res: IRes) {
 	const user = req.body
 	await UserController.updateOne(res, user)
@@ -31,7 +26,6 @@ async function delete_(req: IReq, res: IRes) {
 export default {
 	getAll,
 	getOne,
-	add,
 	update,
 	delete: delete_,
 } as const

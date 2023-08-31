@@ -1,5 +1,5 @@
 import * as e from 'express'
-import { IUser } from './User'
+import {IUser} from './User'
 
 export type Immutable<T> = {
   readonly [K in keyof T]: Immutable<T[K]>;

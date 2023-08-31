@@ -7,7 +7,7 @@ import AuthRoutes from './AuthRoutes'
 import UserRoutes from './UserRoutes'
 
 const apiRouter = Router(),
-	validate = jetValidator()
+	validate = jetValidator() // TODO replace at some point
 
 
 // auth routes
@@ -23,16 +23,11 @@ authRouter.post(
 	AuthRoutes.signin,
 )
 
-authRouter.delete(
-	Paths.Auth.SignOut,
-	AuthRoutes.signout,
-)
+// authRouter.delete(
+// 	Paths.Auth.SignOut,
+// 	AuthRoutes.signout,
+// )
 
-// 	resetPassword: (
-// 	  password: string,
-// 	  passwordConfirmation: string,
-// 	  headers: string,
-// 	) => Promise<void>;
 // authRouter.put(
 // 	Paths.Auth.Reset,
 // 	AuthRoutes.reset
@@ -51,12 +46,6 @@ userRouter.get(
 	Paths.Users.GetOne,
 	validate(['id', 'string', 'params']),
 	UserRoutes.getOne,
-)
-
-userRouter.post(
-	Paths.Users.Add,
-	// validate(['user', User.isUser]),
-	UserRoutes.add,
 )
 
 userRouter.put(

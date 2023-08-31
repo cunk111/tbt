@@ -21,6 +21,8 @@
     "semi": ["warn", "never"],
     "indent": ["warn", "tab"],
     "quotes": ["warn", "single"],
+    "no-trailing-spaces": "warn",
+    "object-curly-spacing": ["warn", "never"],
     "node/no-unsupported-features/es-syntax": ["error", {"ignores" : ["modules"]}],
     "node/no-missing-import": 0,
     "node/no-unpublished-import": 0

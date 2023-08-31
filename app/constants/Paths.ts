@@ -15,7 +15,6 @@ const Paths = {
 		GetOne: '/:id',
 		Comments: '/:id/comments',
 		Posts: '/:id/posts',
-		Add: '/add',
 		Update: '/update',
 		Delete: '/delete/:id',
 	},
