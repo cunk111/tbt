@@ -1,13 +1,13 @@
 import {Router} from 'express'
-import jetValidator from 'jet-validator'
+import Joi from 'joi'
+import {createValidator} from 'express-joi-validator'
 
 import Paths from '@constants/Paths'
 
 import AuthRoutes from './AuthRoutes'
 import UserRoutes from './UserRoutes'
 
-const apiRouter = Router(),
-	validate = jetValidator() // TODO replace at some point
+const apiRouter = Router()
 
 
 // auth routes
