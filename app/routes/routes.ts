@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import jetValidator from 'jet-validator'
 
-import Paths from '../constants/Paths'
+import Paths from '@constants/Paths'
 
 import AuthRoutes from './AuthRoutes'
 import UserRoutes from './UserRoutes'
@@ -28,7 +28,11 @@ authRouter.delete(
 	AuthRoutes.signout,
 )
 
-// 	resetPassword: (password: string, passwordConfirmation: string, headers: string) => Promise<void>;
+// 	resetPassword: (
+// 	  password: string,
+// 	  passwordConfirmation: string,
+// 	  headers: string,
+// 	) => Promise<void>;
 // authRouter.put(
 // 	Paths.Auth.Reset,
 // 	AuthRoutes.reset
@@ -45,7 +49,7 @@ userRouter.get(
 
 userRouter.get(
 	Paths.Users.GetOne,
-	validate(['id', 'number', 'params']),
+	validate(['id', 'string', 'params']),
 	UserRoutes.getOne,
 )
 
@@ -63,7 +67,7 @@ userRouter.put(
 
 userRouter.delete(
 	Paths.Users.Delete,
-	validate(['id', 'number', 'params']),
+	validate(['id', 'string', 'params']),
 	UserRoutes.delete,
 )
 
