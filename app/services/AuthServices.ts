@@ -1,4 +1,4 @@
-import {IUser} from '@models/User'
+import {DBUser, IUser} from '@models/User'
 import {pg} from '@infrastructure/database'
 import {hashPassword} from '@utils/encryption'
 
@@ -18,15 +18,15 @@ async function checkExistence(name: IUser['username'], email: IUser['email']) {
 async function register(user: IUser) {
 	try {
 		return pg
-			.insert<IUser>({
+			.insert({
 				u_username: user.username,
 				u_password: hashPassword(user.password),
 				email: user.email,
 			})
 			.into('user_account')
-			.returning(['u_id', 'email', 'u_username'])
+			.returning<DBUser[]>(['u_id', 'email', 'u_username'])
 	} catch (error) {
-		return null
+		return []
 	}
 }
 

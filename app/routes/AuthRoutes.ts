@@ -1,8 +1,6 @@
 import AuthController from '@controllers/AuthController'
-
 import {IReq, IRes} from '@models/types'
 import {IUser} from '@models/User'
-
 
 async function register(req: IReq<IUser>, res: IRes) {
 	const user = req.body

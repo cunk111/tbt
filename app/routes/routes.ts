@@ -1,25 +1,32 @@
+import {createValidator} from 'express-joi-validation'
 import {Router} from 'express'
-import Joi from 'joi'
-import {createValidator} from 'express-joi-validator'
 
 import Paths from '@constants/Paths'
 
 import AuthRoutes from './AuthRoutes'
 import UserRoutes from './UserRoutes'
 
-const apiRouter = Router()
+import {
+	authRegisterValidator,
+	authSigninValidator,
+	uuidValidator,
+} from './validators/index'
 
+const apiRouter = Router()
+const validator = createValidator()
 
 // auth routes
 const authRouter = Router()
 
 authRouter.post(
 	Paths.Auth.Register,
+	validator.body(authRegisterValidator),
 	AuthRoutes.register,
 )
 
 authRouter.post(
 	Paths.Auth.SignIn,
+	validator.body(authSigninValidator),
 	AuthRoutes.signin,
 )
 
@@ -44,7 +51,7 @@ userRouter.get(
 
 userRouter.get(
 	Paths.Users.GetOne,
-	validate(['id', 'string', 'params']),
+	validator.params(uuidValidator.required()),
 	UserRoutes.getOne,
 )
 
@@ -56,7 +63,7 @@ userRouter.put(
 
 userRouter.delete(
 	Paths.Users.Delete,
-	validate(['id', 'string', 'params']),
+	validator.params(uuidValidator),
 	UserRoutes.delete,
 )
 

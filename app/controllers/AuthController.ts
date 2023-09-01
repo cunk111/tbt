@@ -2,31 +2,12 @@ import jwt from 'jsonwebtoken'
 
 import HttpStatusCodes from '@constants/HttpStatusCodes'
 
-import {ILoggedUser, IUser} from '@models/User'
+import {IUser} from '@models/User'
 import {IRes} from '@models/types'
 
 import AuthServices from '@services/AuthServices'
 import UserServices from '@services/UserServices'
 import {matchPassword} from '@utils/encryption'
-
-
-// async function register( // TODO fusion with UserServices.add() bc it's the same thing
-// 	username: IUser['username'],
-// 	email: IUser['email'],
-// 	password: IUser['password'],
-// ): Promise<ILoggedUser | undefined> {
-// 	const newUser = await UserServices.register(username, email, hashPassword(password))
-//
-// 	if (newUser) {
-// 		const token = jwt.sign({
-// 			id: newUser.id.toString(),
-// 			name: newUser.username,
-// 		}, 'SECRET_KEY')
-//
-// 		return {...newUser, token} as ILoggedUser
-// 	}
-// 	return newUser
-// }
 
 async function register(res: IRes, user: IUser): Promise<IRes> {
 	try {
@@ -42,7 +23,7 @@ async function register(res: IRes, user: IUser): Promise<IRes> {
 
 		// checks existence
 		const exists = await AuthServices.checkExistence(username, email)
-		// early abort if exists
+		// early abort if already exists
 		if (Array.isArray(exists) && exists.length > 0) {
 			return res
 				.status(HttpStatusCodes.FORBIDDEN)
@@ -50,15 +31,31 @@ async function register(res: IRes, user: IUser): Promise<IRes> {
 		}
 
 		// else tries to create
-		const new_user = await AuthServices.register(user)
-		// creation failed
+		const new_user = await AuthServices
+			.register(user)
+			.then(user_array => user_array.pop())
+
 		if (!new_user) {
+		// creation failed
 			return res
 				.status(HttpStatusCodes.BAD_REQUEST)
 				.json({error: 'error creating user'})
 		} else {
 			// creation succeeded
-			return res.status(HttpStatusCodes.CREATED).json(new_user)
+			const secret = process.env.JWT_SECRET || 'will you fuck off' // TODO
+			const token = jwt.sign({
+				id: new_user.u_id,
+				name: new_user.u_username,
+			}, secret)
+
+			return res
+				.status(HttpStatusCodes.CREATED)
+				.json({ // DBUser to IUser
+					id: new_user.u_id,
+					email: new_user.email,
+					username: new_user.u_username,
+					token: token,
+				})
 		}
 
 	} catch (error: unknown) {
@@ -88,13 +85,14 @@ async function signin(credentials: Partial<IUser>, res: IRes) {
 		if (matchFound) {
 			const secret = process.env.JWT_SECRET || 'will you fuck off' // TODO
 			const token = jwt.sign({
-				id: user.id.toString(),
+				id: user.id,
 				name: user.username,
 			}, secret)
 
 			return res.status(HttpStatusCodes.OK).json({...user, token})
 		}
 	}
+
 	return res
 		.status(HttpStatusCodes.BAD_REQUEST)
 		.json({error: 'no user match'})

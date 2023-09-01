@@ -4,6 +4,7 @@ export interface IUser {
   username: string;
   email: string;
 	password: string;
+	token?: JwtPayload;
 }
 
 export interface DBUser {
@@ -11,8 +12,5 @@ export interface DBUser {
 	u_username: string;
 	u_password: string;
 	email: string;
-}
-
-export interface ILoggedUser extends IUser {
 	token: JwtPayload | string;
 }
