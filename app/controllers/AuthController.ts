@@ -12,13 +12,7 @@ import {matchPassword} from '@utils/encryption'
 async function register(res: IRes, user: IUser): Promise<IRes> {
 	try {
 		// early abort : password too short, username too short, funky email ?
-		const {email, username, password} = user
-
-		if (password.length < 8) {
-			return res
-				.status(HttpStatusCodes.FORBIDDEN)
-				.json({error: 'password too short'})
-		}
+		const {email, username} = user
 
 		// checks existence
 		const exists = await AuthServices.checkExistence(username, email)
@@ -118,10 +112,6 @@ async function signin(credentials: Partial<IUser>, res: IRes) {
 }
 
 
-// function signout(): Promise<void> {
-// 	return AuthServices.signout()
-// }
-
 // async function password(post: IUser): Promise<void> {
 // 	const persists = await UserServices.persists(post.id);
 // 	if (!persists) {
@@ -136,6 +126,5 @@ async function signin(credentials: Partial<IUser>, res: IRes) {
 export default {
 	register,
 	signin,
-	// signout,
 	// password,
 } as const

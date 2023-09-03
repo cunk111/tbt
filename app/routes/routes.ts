@@ -31,11 +31,6 @@ authRouter.post(
 	AuthRoutes.signin,
 )
 
-// authRouter.delete(
-// 	Paths.Auth.SignOut,
-// 	AuthRoutes.signout,
-// )
-
 // authRouter.put(
 // 	Paths.Auth.Reset,
 // 	AuthRoutes.reset

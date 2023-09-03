@@ -12,11 +12,6 @@ async function signin(req: IReq<Partial<IUser>>, res: IRes) {
 	await AuthController.signin(credentials, res)
 }
 
-// async function signout(_: IReq, res: IRes) {
-// 	await AuthController.signout()
-// 	return res.status(HttpStatusCodes.OK).end()
-// }
-
 // async function reset(req: IReq<{password: string, passwordConfirmation: string}>, res: IRes) {
 // 	const {password, passwordConfirmation} = req.body;
 // 	await AuthController.reset(password, passwordConfirmation);
@@ -26,6 +21,5 @@ async function signin(req: IReq<Partial<IUser>>, res: IRes) {
 export default {
 	register,
 	signin,
-	// signout,
 	// reset,
 } as const
