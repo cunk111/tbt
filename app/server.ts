@@ -5,16 +5,13 @@ import logger from 'jet-logger'
 import morgan from 'morgan'
 import process from 'process'
 import cookieParser from 'cookie-parser'
-
 // import 'express-async-errors'
-
-import routes from '@routes/routes'
 
 import HttpStatusCodes from '@constants/HttpStatusCodes'
 import Paths from '@constants/Paths'
-
 import {RouteError} from '@models/classes'
 
+import routes from '@routes/routes'
 
 const app = express()
 app.use(cors<Request>())

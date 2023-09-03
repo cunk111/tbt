@@ -8,7 +8,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": ["./global.d.ts", "./node_modules/@types"],                       /* List of folders to include type definitions from. */
+    /* List of folders to include type definitions from. */
+    "typeRoots": ["./global.d.ts", "./node_modules/@types"],
     "paths": {
       "@constants/*": ["app/constants/*"],
       "@controllers/*": ["app/controllers/*"],

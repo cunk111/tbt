@@ -1,4 +1,4 @@
-import { Immutable } from '@models/types'
+import {Immutable} from '@models/types'
 
 const Paths = {
 	Base: '/api',
@@ -6,15 +6,12 @@ const Paths = {
 		Base: '/auth',
 		Register: '/register',
 		SignIn: '/signin',
-		SignOut: '/signout',
 		Reset: '/password',
 	},
 	Users: {
 		Base: '/users',
 		Get: '/all',
 		GetOne: '/:id',
-		Comments: '/:id/comments',
-		Posts: '/:id/posts',
 		Update: '/update',
 		Delete: '/delete/:id',
 	},

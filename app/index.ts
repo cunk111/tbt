@@ -2,7 +2,6 @@ import process from 'process'
 import logger from 'jet-logger'
 import dotenv from 'dotenv'
 
-import 'module-alias/register' // TODO fix build process
 
 dotenv.config({path: `${__dirname}/../env/.env.${process.env.NODE_ENV}`})
 

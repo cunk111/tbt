@@ -1,4 +1,4 @@
-import fs from 'fs-extra'
+import fs from 'fs-extra' // , {copy}
 import logger from 'jet-logger'
 import childProcess from 'child_process'
 
@@ -7,8 +7,8 @@ import childProcess from 'child_process'
 		// Remove current build
 		await remove('./dist/')
 		// Copy front-end files
-		await copy('./app/public', './dist/public');
-		await copy('./app/views', './dist/views');
+		// await copy('./app/public', './dist/public')
+		// await copy('./app/views', './dist/views')
 		// Copy back-end files
 		await exec('tsc --build tsconfig.prod.json', './')
 	} catch (err) {

@@ -47,19 +47,19 @@ userRouter.get(
 
 userRouter.get(
 	Paths.Users.GetOne,
-	validator.params(uuidValidator.required()),
+	validator.query(uuidValidator.required()),
 	UserRoutes.getOne,
 )
 
 userRouter.put(
 	Paths.Users.Update,
-	validator.body(userUpdateValidator), // TODO check it works
+	validator.body(userUpdateValidator),
 	UserRoutes.update,
 )
 
 userRouter.delete(
 	Paths.Users.Delete,
-	validator.params(uuidValidator.required()),
+	validator.query(uuidValidator.required()),
 	UserRoutes.delete,
 )
 

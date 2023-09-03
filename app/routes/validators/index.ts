@@ -1,6 +1,8 @@
 import joi from 'joi'
 
-const uuidValidator = joi.string().guid({version : 'uuidv4'})
+const uuidValidator = joi.object({
+	id: joi.string().guid({version : 'uuidv4'}),
+})
 
 const authRegisterValidator = joi.object({
 	email: joi.string().email().trim().required(),
@@ -15,6 +17,7 @@ const authSigninValidator = joi.object({
 }).xor('email', 'username') // whether email or username
 
 const userUpdateValidator = joi.object({
+	id: joi.string().guid({version : 'uuidv4'}),
 	email: joi.string().email().trim(),
 	username: joi.string().trim().min(6).max(60),
 	password: joi.string().trim().min(8),

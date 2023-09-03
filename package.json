@@ -2,12 +2,11 @@
   "name": "back",
   "version": "0.0.0",
   "scripts": {
-    "build": "npx ts-node build.ts",
-    "lint": "npx eslint --ext .ts app/",
-    "lint-fix": "npx eslint --fix --ext .ts app/",
-    "start": "NODE_ENV=production node -r module-alias/register ./dist",
+    "build": "ts-node build.ts",
+    "lint": "eslint --ext .ts app/",
+    "lint-fix": "eslint --fix --ext .ts app/",
+    "start": "NODE_ENV=production ts-node -r tsconfig-paths/register ./dist/index.js",
     "dev": "NODE_ENV=development nodemon",
-    "test": "nodemon --config ./spec/nodemon.json",
     "db:up": "docker compose -f docker-compose.yml up",
     "db:down": "docker compose -f docker-compose.yml down"
   },
@@ -19,7 +18,13 @@
     "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./app"
   },
   "_moduleAliases": {
-    "@": "dist"
+    "@constants/*": "dist/constants/*",
+    "@controllers/*": "dist/controllers/*",
+    "@infrastructure/*": "dist/infrastructure/*",
+    "@models/*": "dist/models/*",
+    "@routes/*": "dist/routes/*",
+    "@services/*": "dist/services/*",
+    "@utils/*": "dist/utils/*"
   },
   "engines": {
     "node": ">=18.17.1"
@@ -36,7 +41,6 @@
     "jsonfile": "^6.1.0",
     "jsonwebtoken": "^9.0.1",
     "knex": "^2.5.1",
-    "module-alias": "^2.2.3",
     "morgan": "^1.10.0",
     "pg": "^8.11.3"
   },
