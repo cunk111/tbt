@@ -9,6 +9,7 @@ import UserRoutes from './UserRoutes'
 import {
 	authRegisterValidator,
 	authSigninValidator,
+	userUpdateValidator,
 	uuidValidator,
 } from './validators/index'
 
@@ -57,13 +58,13 @@ userRouter.get(
 
 userRouter.put(
 	Paths.Users.Update,
-	// validate(['user', User.isUser]),
+	validator.body(userUpdateValidator), // TODO check it works
 	UserRoutes.update,
 )
 
 userRouter.delete(
 	Paths.Users.Delete,
-	validator.params(uuidValidator),
+	validator.params(uuidValidator.required()),
 	UserRoutes.delete,
 )
 

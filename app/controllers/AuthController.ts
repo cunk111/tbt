@@ -11,7 +11,6 @@ import {matchPassword} from '@utils/encryption'
 
 async function register(res: IRes, user: IUser): Promise<IRes> {
 	try {
-		// TODO move to a legit schema validator middleware
 		// early abort : password too short, username too short, funky email ?
 		const {email, username, password} = user
 
@@ -43,10 +42,16 @@ async function register(res: IRes, user: IUser): Promise<IRes> {
 		} else {
 			// creation succeeded
 			const secret = process.env.JWT_SECRET || 'will you fuck off' // TODO
-			const token = jwt.sign({
-				id: new_user.u_id,
-				name: new_user.u_username,
-			}, secret)
+			const token = jwt.sign(
+				{id: user.id, name: user.username},
+				secret,
+				{expiresIn: process.env.COOKIE_EXP})
+
+			res.cookie('jwt', token, {
+				httpOnly: true,
+				maxAge: 259200000 * 1000, // TODO process.env.COOKIE_EXP
+			})
+
 
 			return res
 				.status(HttpStatusCodes.CREATED)
@@ -64,38 +69,52 @@ async function register(res: IRes, user: IUser): Promise<IRes> {
 }
 
 async function signin(credentials: Partial<IUser>, res: IRes) {
-	const {email, username, password} = credentials
+	try {
+		const {email, username, password} = credentials
 
-	// early abort if credentials are missing
-	if ((!email && !username) || !password) {
+		// early abort if credentials are missing
+		if ((!email && !username) || !password) {
+			return res
+				.status(HttpStatusCodes.BAD_REQUEST)
+				.json({error: 'missing credentials, looser'})
+		}
+
+		let user
+		if (email) {
+			user = await UserServices.findByMail(email)
+		} else if (username) {
+			user = await UserServices.findByUsername(username)
+		}
+
+		if (user) {
+			const matchFound = matchPassword(password, user.password)
+			if (matchFound) {
+				const secret = process.env.JWT_SECRET || 'will you fuck off' // TODO
+				const token = jwt.sign(
+					{id: user.id, name: user.username},
+					secret,
+					{expiresIn: process.env.COOKIE_EXP})
+
+				res.cookie('jwt', token, {
+					httpOnly: true,
+					maxAge: 259200000 * 1000, // TODO process.env.COOKIE_EXP
+				})
+
+				return res.status(HttpStatusCodes.OK).json({...user, token})
+			}
+			return res
+				.status(HttpStatusCodes.BAD_REQUEST)
+				.json({error: 'wrong password'})
+		}
+
 		return res
 			.status(HttpStatusCodes.BAD_REQUEST)
-			.json({error: 'missing credentials, looser'})
+			.json({error: 'user not found'})
+	} catch (error) {
+		return res
+			.status(HttpStatusCodes.BAD_REQUEST)
+			.json({error: 'signin went wrong'})
 	}
-
-	let user
-	if (email) {
-		user = await UserServices.findByMail(email)
-	} else if (username) {
-		user = await UserServices.findByUsername(username)
-	}
-
-	if (user) {
-		const matchFound= matchPassword(password, user.password)
-		if (matchFound) {
-			const secret = process.env.JWT_SECRET || 'will you fuck off' // TODO
-			const token = jwt.sign({
-				id: user.id,
-				name: user.username,
-			}, secret)
-
-			return res.status(HttpStatusCodes.OK).json({...user, token})
-		}
-	}
-
-	return res
-		.status(HttpStatusCodes.BAD_REQUEST)
-		.json({error: 'no user match'})
 }
 
 

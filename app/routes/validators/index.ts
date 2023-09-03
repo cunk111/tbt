@@ -14,8 +14,15 @@ const authSigninValidator = joi.object({
 	password: joi.string().trim().min(8).required(),
 }).xor('email', 'username') // whether email or username
 
+const userUpdateValidator = joi.object({
+	email: joi.string().email().trim(),
+	username: joi.string().trim().min(6).max(60),
+	password: joi.string().trim().min(8),
+})
+
 export {
 	authRegisterValidator,
 	authSigninValidator,
+	userUpdateValidator,
 	uuidValidator,
 }
