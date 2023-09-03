@@ -1,43 +1,31 @@
-## About
+## Tomi's Backend Template
+------------------------
 
-This project was created with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript).
-
-
-## Available Scripts
-
-### `npm run dev`
-
-Run the server in development mode.
-
-### `npm test`
-
-Run all unit-tests with hot-reloading.
-
-### `npm test -- --testFile="name of test file" (i.e. --testFile=Users).`
-
-Run a single unit-test.
-
-### `npm run test:no-reloading`
-
-Run all unit-tests without hot-reloading.
-
-### `npm run lint`
-
-Check for linting errors.
-
-### `npm run build`
-
-Build the project for production.
-
-### `npm start`
-
-Run the production build (Must be built first).
-
-### `npm start -- --env="name of env file" (default is production).`
-
-Run production build with a different env file.
+#### Prerequisite
+- node engine v18+
+- git cli
+- yarn or npm
+- docker desktop
 
 
-## Additional Notes
+#### installation
+`gh repo clone cunk111/tbt` using github CLI
 
-- If `npm run dev` gives you issues with bcrypt on MacOS you may need to run: `npm rebuild bcrypt --build-from-source`. 
+or
+
+`https://github.com/cunk111/tbt.git` using https
+
+and finally
+
+`cd tbt && yarn install`
+
+#### Get it running
+
+First you'll need to fill env files, located in the env/ folder, following the template provided,
+those files are expected to be named ```.env.production``` and/or ```.env.development```
+
+You'll need to run two services, a docker image for postgres db and the mere node server
+
+first run `yarn run db:up`
+
+on a second promp, run `yarn run dev` or `yarn run start`
